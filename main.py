@@ -12,7 +12,7 @@ from notify import edit_message, send_message_to_line
 from flag import check
 
 # 変数の設定
-INTERVAL = 60 * 5
+INTERVAL = 60 * 1
 AMOUNT = 0.006
 DURATION = 35
 
