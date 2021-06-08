@@ -2,18 +2,6 @@ import configparser
 
 import requests
 
-from coincheck import Coincheck
-
-def edit_message(d, order_type):
-    coincheck = Coincheck()
-    if order_type == "sell":
-        del d["rate"], d["pair"], d["created_at"], d["market_buy_amount"], d["stop_loss_rate"]
-        d["bid_rate"] = coincheck.bid_rate
-    if order_type == "buy":
-        del d["amount"], d["rate"], d["pair"], d["created_at"], d["stop_loss_rate"]
-        d["ask_rate"] = coincheck.ask_rate
-    return d
-
 def pprint(message):
     s = ""
     if isinstance(message, dict):

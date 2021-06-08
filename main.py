@@ -96,7 +96,7 @@ while True:
     # 判定ロジック
     flag = bb.check_bollinger_band(df, flag)
     # flag = macd.check_macd(df, flag)
-    flag = rsi.calc_rsi(df)
+    flag = rsi.check_rsi(df, flag)
 
     # 売買
     # 売り（SELL）
@@ -110,8 +110,8 @@ while True:
             r = coincheck.order(params)
 
             print("########## SELL ##########")
-            r = edit_message(r, order_type="sell")
             send_message_to_line(r)
+            send_message_to_line(coincheck.bid_rate)
     # 買い
     else:
         if check(flag, order_type="buy"):
@@ -124,8 +124,8 @@ while True:
             r = coincheck.order(params)
 
             print("########## BUY ##########")
-            r = edit_message(r, order_type="buy")
             send_message_to_line(r)
+            send_message_to_line(coincheck.ask_rate)
 
     # LOG出力
     dt_now = datetime.datetime.now()
