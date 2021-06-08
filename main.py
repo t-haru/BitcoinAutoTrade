@@ -15,7 +15,7 @@ from notify import edit_message, send_message_to_line
 # 変数の設定
 INTERVAL = 60 * 1
 AMOUNT = 0.005
-DURATION = 35
+DURATION = 20
 
 # 設定ファイルの読み込み
 conf = configparser.ConfigParser()
