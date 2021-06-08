@@ -14,7 +14,7 @@ from notify import send_message_to_line
 
 # 変数の設定
 INTERVAL = 60 * 1
-AMOUNT = 0.005
+AMOUNT = 0.008
 DURATION = 20
 
 # 設定ファイルの読み込み
@@ -111,21 +111,27 @@ while True:
 
             print("########## SELL ##########")
             send_message_to_line(r)
-            send_message_to_line(coincheck.bid_rate)
+            send_message_to_line("レート：" + str(coincheck.bid_rate))
     # 買い
     else:
         if check(flag, order_type="buy"):
             params = {
                 "pair": "btc_jpy",
                 "order_type": "buy",
-                "rate": df["price"].iloc[-1],
                 "amount": AMOUNT
+            }
+            market_buy_amount = coincheck.rate(params)
+
+            params = {
+                "pair": "btc_jpy",
+                "order_type": "market_buy",
+                "market_buy_amount": market_buy_amount["price"]
             }
             r = coincheck.order(params)
 
             print("########## BUY ##########")
             send_message_to_line(r)
-            send_message_to_line(coincheck.ask_rate)
+            send_message_to_line("レート：" + str(coincheck.ask_rate))
 
     # LOG出力
     dt_now = datetime.datetime.now()
