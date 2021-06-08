@@ -12,7 +12,7 @@ from notify import edit_message, send_message_to_line
 from flag import check
 
 # 変数の設定
-INTERVAL = 60 * 1
+INTERVAL = 60 * 5
 AMOUNT = 0.006
 DURATION = 35
 
@@ -92,12 +92,12 @@ while True:
     # 売り（SELL）
     if "btc" in position.keys():
         if check(flag, order_type="sell") and coincheck.ask_rate < df["price"].iloc[-1]:
-            # params = {
-            #     "pair": "btc_jpy",
-            #     "order_type": "market_sell",
-            #     "amount": position["btc"],
-            # }
-            # r = coincheck.order(params)
+            params = {
+                "pair": "btc_jpy",
+                "order_type": "market_sell",
+                "amount": position["btc"],
+            }
+            r = coincheck.order(params)
 
             print("########## SELL ##########")
             r = edit_message(r, order_type="sell")
@@ -114,12 +114,12 @@ while True:
             market_buy_amount = coincheck.rate(params)
 
             price = market_buy_amount["price"]
-            # params = {
-            #     "pair": "btc_jpy",
-            #     "order_type": "market_buy",
-            #     "market_buy_amount": price
-            # }
-            # r = coincheck.order(params)
+            params = {
+                "pair": "btc_jpy",
+                "order_type": "market_buy",
+                "market_buy_amount": price
+            }
+            r = coincheck.order(params)
 
             print("########## BUY ##########")
             r = edit_message(r, order_type="buy")
@@ -128,7 +128,7 @@ while True:
     # LOG出力
     dt_now = datetime.datetime.now()
     print("Loop:" + str(cnt) + "  -  " + dt_now.strftime("%m/%d %H:%M:%S"))
-    print(df.iloc[-1:-2])
+    print(df.iloc[-2])
     cnt += 1
 
     # 先頭行の削除
