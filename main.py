@@ -12,8 +12,8 @@ from notify import edit_message, send_message_to_line
 from flag import check
 
 # 変数の設定
-INTERVAL = 60 * 5
-AMOUNT = 0.006
+INTERVAL = 60 * 1
+AMOUNT = 0.005
 DURATION = 35
 
 # 設定ファイルの読み込み
@@ -36,11 +36,13 @@ df = pd.DataFrame()
 flag = {
     "buy": {
         "BB": False,
-        "MACD": False
+        "MACD": False,
+        "RSI": False
     },
     "sell": {
         "BB": False,
-        "MACD": False
+        "MACD": False,
+        "RSI": False
     }
 }
 
@@ -105,19 +107,11 @@ while True:
     # 買い
     else:
         if check(flag, order_type="buy"):
-            # 取引所の注文を元にレートを算出（BTC -> JPY）
             params = {
+                "pair": "btc_jpy",
                 "order_type": "buy",
-                "pair": "btc_jpy",
+                "rate": df["price"].iloc[-1],
                 "amount": AMOUNT
-            }
-            market_buy_amount = coincheck.rate(params)
-
-            price = market_buy_amount["price"]
-            params = {
-                "pair": "btc_jpy",
-                "order_type": "market_buy",
-                "market_buy_amount": price
             }
             r = coincheck.order(params)
 
@@ -128,7 +122,7 @@ while True:
     # LOG出力
     dt_now = datetime.datetime.now()
     print("Loop:" + str(cnt) + "  -  " + dt_now.strftime("%m/%d %H:%M:%S"))
-    print(df.iloc[-2])
+    print(df.iloc[-2:])
     cnt += 1
 
     # 先頭行の削除
