@@ -6,10 +6,11 @@ import time
 import pandas as pd
 
 from coincheck import Coincheck
+from flag import check
 from logic.bollinger_band import Bollinger_band
 from logic.macd import MACD
+from logic.rsi import RSI
 from notify import edit_message, send_message_to_line
-from flag import check
 
 # 変数の設定
 INTERVAL = 60 * 1
@@ -48,14 +49,19 @@ flag = {
 
 # 期間の設定
 bb_duration = 20        # ボリンジャーバンドの期間
+
 short_duration = 9      # 短期移動平均の期間
 long_duration = 26      # 長期移動平均の期間
 signal_duration = 9     # シグナルの計算に用いるMACDの期間
 
+rsi_duration = 14
+
 # ループの準備
 cnt = 1
+
 bb = Bollinger_band(bb_duration)
 macd = MACD(short_duration, long_duration, signal_duration)
+rsi = RSI(rsi_duration)
 
 while True:
     time.sleep(INTERVAL)
@@ -84,11 +90,13 @@ while True:
 
     # 計算ロジック
     df = bb.calc_bollinger_band(df)
-    df = macd.calc_macd(df)
+    # df = macd.calc_macd(df)
+    df = rsi.calc_rsi(df)
 
     # 判定ロジック
     flag = bb.check_bollinger_band(df, flag)
-    flag = macd.check_macd(df, flag)
+    # flag = macd.check_macd(df, flag)
+    flag = rsi.calc_rsi(df)
 
     # 売買
     # 売り（SELL）
