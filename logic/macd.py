@@ -1,5 +1,3 @@
-import pandas as pd
-
 # MACD
 class MACD(object):
     def __init__(self, short_duration=9, long_duration=26, signal_duration=9):
@@ -8,7 +6,7 @@ class MACD(object):
         self.signal_duration = signal_duration
 
     # MACDの計算
-    def calc_macd(self, df: pd.DataFrame):
+    def calc_macd(self, df):
         df["short_SMA"] = df["price"].rolling(window=self.short_duration).mean()
         df["long_SMA"] = df["price"].rolling(window=self.long_duration).mean()
 
@@ -23,7 +21,7 @@ class MACD(object):
         return df
 
     # MACDのチェック
-    def check_macd(self, df: pd.DataFrame, flag):
+    def check_macd(self, df, flag):
         if df.iloc[-2]["MACD-signal"] < 0 and df.iloc[-1]["MACD-signal"] > 0:
             flag["buy"]["MACD"] = True
         else:

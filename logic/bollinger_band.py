@@ -1,12 +1,10 @@
-import pandas as pd
-
 # ボリンジャーバンド（BB）
 class Bollinger_band(object):
     def __init__(self, duration=20):
         self.duration = duration
 
     # BBの計算
-    def calc_bollinger_band(self, df: pd.DataFrame):
+    def calc_bollinger_band(self, df):
         sigma = 2
 
         # 平均と標準偏差の計算
@@ -19,7 +17,7 @@ class Bollinger_band(object):
         return df
 
     # BBのチェック
-    def check_bollinger_band(self, df: pd.DataFrame, flag):
+    def check_bollinger_band(self, df, flag):
         # 売り
         if df["price"].iloc[-1] > df["+2σ"].iloc[-1]:
             flag["sell"]["BB"] = True
