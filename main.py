@@ -10,7 +10,7 @@ from flag import check
 from logic.bollinger_band import Bollinger_band
 from logic.macd import MACD
 from logic.rsi import RSI
-from notify import edit_message, send_message_to_line
+from notify import send_message_to_line
 
 # 変数の設定
 INTERVAL = 60 * 1
