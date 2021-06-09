@@ -12,11 +12,6 @@ from logic.macd import MACD
 from logic.rsi import RSI
 from notify import send_message_to_line
 
-# 変数の設定
-INTERVAL = 60 * 1
-AMOUNT = 0.008
-DURATION = 20
-
 # 設定ファイルの読み込み
 conf = configparser.ConfigParser()
 conf.read("config.ini")
@@ -46,6 +41,11 @@ flag = {
         "RSI": False
     }
 }
+
+# 変数の設定
+INTERVAL = 59
+AMOUNT = 0.008
+DURATION = 20
 
 # 期間の設定
 bb_duration = 20        # ボリンジャーバンドの期間
@@ -90,22 +90,23 @@ while True:
 
     # 計算ロジック
     df = bb.calc_bollinger_band(df)
-    # df = macd.calc_macd(df)
     df = rsi.calc_rsi(df)
+    # df = macd.calc_macd(df)
 
     # 判定ロジック
     flag = bb.check_bollinger_band(df, flag)
-    # flag = macd.check_macd(df, flag)
     flag = rsi.check_rsi(df, flag)
+    # flag = macd.check_macd(df, flag)
 
     # 売買
     # 売り（SELL）
     if "btc" in position.keys():
         if check(flag, order_type="sell") and coincheck.ask_rate < df["price"].iloc[-1]:
+        # if check(flag, order_type="sell"):
             params = {
                 "pair": "btc_jpy",
                 "order_type": "market_sell",
-                "amount": position["btc"],
+                "amount": position["btc"]
             }
             r = coincheck.order(params)
 
