@@ -43,7 +43,7 @@ flag = {
 }
 
 # 変数の設定
-INTERVAL = 59
+INTERVAL = 58
 AMOUNT = 0.008
 DURATION = 20
 
@@ -64,8 +64,8 @@ macd = MACD(short_duration, long_duration, signal_duration)
 rsi = RSI(rsi_duration)
 
 while True:
-    time.sleep(INTERVAL)
     print("**************************************************")
+    time.sleep(INTERVAL)
 
     position = coincheck.position
     if not position.get("jpy"):
